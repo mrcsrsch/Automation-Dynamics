@@ -16,7 +16,7 @@ for (y in 2006:2021){
   # message
   cat(paste(Sys.time(), y, "\n"))
   i <- i+1
-  EDUC[[i]] <- fread(file=paste0(map_data_source, "HOOGSTEOPLTAB/HOOGSTEOPLTAB", y, "1299ANAV1.csv"), colClasses="character")
+  EDUC[[i]] <- fread(file=paste0(map_data_source, "EDUC/HOOGSTEOPLTAB/HOOGSTEOPLTAB", y, "1299ANAV1.csv"), colClasses="character")
   EDUC[[i]][, year := y]
 }
 rm(y, i)
@@ -33,7 +33,7 @@ gc()
 #### load refboeks and combine #####
 # NOTE: The variable definitions follow from the relevant .INC/.bla files in the input folder. oplrichting_definities is from SSB webtool.
 # read OPLEIDINGSNRREF
-OPLEIDINGSNRREF <- fread(file = paste0(map_data_analysis, "input/EDUC/OPLEIDINGSNRREFV30.txt"), header=F, fill=T, colClasses="character")
+OPLEIDINGSNRREF <- fread(file = paste0(map_data_analysis, "EDUC/OPLEIDINGSNRREFV30.txt"), header=F, fill=T, colClasses="character")
 # extract vars
 OPLEIDINGSNRREF[, OPLNR := substr(V1, 1, 6)]
 OPLEIDINGSNRREF[, CTO := substr(V1, 105, 109)]
@@ -46,18 +46,18 @@ OPLEIDINGSNRREF[ISCEDF2013RICHTINGNLSOI2021V %in% c("", "    ") , ISCEDF2013RICH
 
 # determine opleidingsniveau 
 ## from CTOREFV12
-CTOREFV12 <- fread(file = paste0(map_data_analysis, "input/EDUC/CTOREFV12.txt"), header=F, fill=T, colClasses="character")
+CTOREFV12 <- fread(file = paste0(map_data_analysis, "EDUC/CTOREFV12.txt"), header=F, fill=T, colClasses="character")
 CTOREFV12 <- CTOREFV12[, .(CTO=V1, OPLNIVSOI2021AGG1HB=V33)]
 opl <- merge(OPLEIDINGSNRREF[, .(OPLNR, CTO=CTO2021V, ISCEDF2013RICHTINGNLSOI2021V)], CTOREFV12[, .(CTO, OPLNIVSOI2021AGG1HB)], by="CTO", all.x=T) # "Opleidingsniveau hoogst behaald 3-deling (publicatie) SOI 2021" 
 
 # determine and add opleidingsrichting
 # from ISCEDF2013RICHTINGREFV2
-ISCEDF2013RICHTINGREFV2 <- fread(file = paste0(map_data_analysis, "input/EDUC/ISCEDF2013RICHTINGREFV2.txt"), header=F, fill=T, colClasses="character")
+ISCEDF2013RICHTINGREFV2 <- fread(file = paste0(map_data_analysis, "EDUC/ISCEDF2013RICHTINGREFV2.txt"), header=F, fill=T, colClasses="character")
 ISCEDF2013RICHTINGREFV2 <- ISCEDF2013RICHTINGREFV2[, .(ISCEDF2013RICHTINGNLSOI2021V=V1, ISCEDF2013RICHTINGPUBLICATIEINDNL=V4)]
 opl <- merge(opl, ISCEDF2013RICHTINGREFV2, by="ISCEDF2013RICHTINGNLSOI2021V", all.x=T) # "ISCEDF2013 RICHTING PUBLICATIEINDELING 11 GROEPEN" 
 
 # add descriptions of ISCEDF2013RICHTINGPUBLICATIEINDNL
-oplrichting_definities <- fread(file = paste0(map_data_analysis, "input/EDUC/oplrichting_definities.csv"), header=T, fill=T, colClasses="character")
+oplrichting_definities <- fread(file = paste0(map_data_analysis, "EDUC/oplrichting_definities.csv"), header=T, fill=T, colClasses="character")
 opl <- merge(opl, oplrichting_definities, by="ISCEDF2013RICHTINGPUBLICATIEINDNL", all.x=T)
 rm(OPLEIDINGSNRREF, CTOREFV12, ISCEDF2013RICHTINGREFV2, oplrichting_definities)
 
