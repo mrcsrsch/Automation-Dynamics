@@ -26,18 +26,15 @@ selected_firms <- POLIS_firms[year %in% 2010:2021, ]
 ### add NACE, size class, firm age, sales from bedrijfsecondata ####
 beidkenmerken <- readRDS(paste0(map_data_analysis, "step1/company/beidkenmerken.rds")) 
 setnames(beidkenmerken, c("size"), c("firm_size_class"))
-firmbirth <- readRDS(paste0(map_data_analysis, "step1/company/firmbirth.rds")) 
 bedrijfsecondata <- readRDS(paste0(map_data_analysis, "step1/company/bedrijfsecondata.rds"))
 bedrijfsecondata <- bedrijfsecondata[!is.na(sales_bedrijfsecondata),]
 
 #### merge with selected_firms #####
 selected_firms[, .(.N, firms=uniqueN(SBEID))]
 selected_firms <- merge(selected_firms, beidkenmerken, by=c("SBEID", "year"), all.x=T) 
-selected_firms <- merge(selected_firms, firmbirth, by=c("SBEID"), all.x=T)
 selected_firms <- merge(selected_firms, bedrijfsecondata, by=c("SBEID", "year"), all.x=T)
 selected_firms[, .(.N, firms=uniqueN(SBEID))]
 rm(beidkenmerken)
-rm(firmbirth)
 rm(bedrijfsecondata)
 
 #### manipulate #### 
@@ -189,7 +186,7 @@ selected_firms <- selected_firms[keep==T, !c("keep")]
 ### Identify automation events #####
 
 #### Productiestatistiek (Total and automation cost) for 2000 - 2021 ####
-ps_costs <- readRDS(paste0(map_data_analysis, "input/PS_costs.rds"))
+ps_costs <- readRDS(paste0(map_data_analysis, "PS/PS_costs.rds"))
 setnames(ps_costs, c("beid", "BEDRLST310000", "BEDRLST348400", "PERSONS110000"), c("SBEID", "total_cost", "automation_cost", "workers_fte"))
 ps_costs[, year := as.integer(year)]
 ps_costs <- ps_costs[, c("SBEID", "year", "workers_fte", "total_cost", "automation_cost")]

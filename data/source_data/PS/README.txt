@@ -1,0 +1,1 @@
+Place source data of the "Productiestatistieken" here. The analysis assumes that all PS datasets are condensed to a single dataset with at least the variables "beid", "BEDRLST310000", "BEDRLST348400" and "PERSONS110000".

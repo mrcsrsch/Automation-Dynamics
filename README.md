@@ -16,7 +16,7 @@ This replication package contains the scripts required to replicate the results 
 ## Replication Instructions
 
 ### Data Preparation
-1. Place the worker-level source data in the `data/source_data/` folder. Ensure that the file `data/source_data/EDUC/oplrichting_definities.csv` and the packages in `data/packages/` are also present.
+1. Place the source data in the `data/source_data/` folder. Ensure that the file `data/source_data/EDUC/oplrichting_definities.csv` and the packages in `data/packages/` are also present.
 2. Specify the SQL server connection for the firm-level source data in the `01_company_data.R` and `02D_IT_Machinery_spikes.R` scripts (see comments in the scripts for guidance).
 3. Adjust the file paths in `00_main.R` to match your directory structure.
 
