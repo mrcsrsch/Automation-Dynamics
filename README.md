@@ -36,7 +36,6 @@ This replication package contains the scripts required to replicate the results 
 This project uses confidential datasets provided by Statistics Netherlands (CBS). The specific datasets are:
 
 ### Worker-Level Datasets
-#### Main Result
 - **SPOLISBUS** (employer-employee data): 2010 - 2021
 - **GBAPERSOON** (worker demographics): 2021
 - **NIET_GBAPERSOON** (worker demographics): 2021
